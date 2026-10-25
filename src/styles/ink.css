@@ -1,0 +1,2574 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #f4ecdc;
+  --ink: #211c17;
+  --ink-soft: #4b4338;
+  --ink-faint: #8a7d6c;
+  --cinnabar: #a5382a;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(
+        1200px 700px at 12% -8%,
+        rgba(255, 255, 255, 0.6),
+        transparent 62%
+      ),
+      radial-gradient(
+        900px 600px at 108% 6%,
+        rgba(150, 170, 130, 0.14),
+        transparent 60%
+      ),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    font-family:
+      "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun",
+      serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 90% at 50% 45%,
+      transparent 55%,
+      rgba(80, 64, 42, 0.16) 100%
+    );
+  }
+
+  #root {
+    position: relative;
+    z-index: 1;
+  }
+
+  ::selection {
+    background: rgba(165, 56, 42, 0.18);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--cinnabar);
+    outline-offset: 3px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(33, 28, 23, 0.18);
+    border-radius: 999px;
+  }
+}
+
+@layer components {
+  .paper-card {
+    @apply relative border border-ink/10 bg-[#fbf6ea]/70 shadow-scroll;
+    border-radius: 2px;
+  }
+
+  .paper-card::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(33, 28, 23, 0.05);
+    pointer-events: none;
+  }
+
+  .seal {
+    @apply inline-flex shrink-0 items-center justify-center bg-cinnabar font-kai leading-none text-[#f7ecda];
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+    box-shadow:
+      inset 0 0 0 1px rgba(247, 236, 218, 0.35),
+      0 1px 2px rgba(80, 30, 20, 0.18);
+  }
+
+  .vtext {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 0.32em;
+  }
+
+  .meta {
+    @apply text-[11px] uppercase tracking-[0.28em] text-ink-faint;
+  }
+
+  .ink-rule {
+    @apply h-px w-full;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(33, 28, 23, 0.22),
+      transparent
+    );
+  }
+
+  .btn-ink {
+    @apply inline-flex items-center justify-center gap-2 border border-ink bg-ink px-6 py-3 font-kai text-sm tracking-[0.18em] text-paper transition-colors;
+    border-radius: 2px;
+  }
+
+  .btn-ink:hover {
+    @apply border-ink-soft bg-ink-soft;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 border border-ink/20 px-4 py-1.5 font-kai text-sm tracking-[0.14em] text-ink-soft transition-colors;
+    border-radius: 2px;
+  }
+
+  .btn-ghost:hover {
+    @apply border-ink/40 bg-ink/5;
+  }
+}
+
+.ink-map {
+  width: 100%;
+  height: 100%;
+  background: #f4ecdc;
+  font-family: inherit;
+}
+
+.ink-map .maplibregl-canvas {
+  filter: grayscale(1) sepia(0.28) contrast(0.92) brightness(1.03);
+}
+
+.ink-map .maplibregl-ctrl-bottom-right {
+  bottom: 6px;
+  right: 6px;
+}
+
+.ink-map .maplibregl-ctrl-group {
+  overflow: hidden;
+  border: 1px solid rgba(33, 28, 23, 0.12);
+  border-radius: 2px;
+  background: rgba(251, 246, 234, 0.92);
+  box-shadow: none;
+}
+
+.ink-map .maplibregl-ctrl-group button {
+  width: 26px;
+  height: 26px;
+}
+
+.ink-map .maplibregl-ctrl-group button + button {
+  border-top: 1px solid rgba(33, 28, 23, 0.1);
+}
+
+.ink-map .maplibregl-marker {
+  z-index: 2;
+}
+
+.ink-marker {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ink-marker__dot {
+  position: relative;
+  display: block;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid rgba(33, 28, 23, 0.5);
+  border-radius: 999px;
+  background: rgba(244, 236, 220, 0.9);
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.ink-marker__label {
+  position: absolute;
+  bottom: calc(100% + 1px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1px 5px;
+  border: 1px solid rgba(33, 28, 23, 0.1);
+  border-radius: 2px;
+  background: rgba(251, 246, 234, 0.88);
+  color: #6b6257;
+  font-family: inherit;
+  font-size: 10.5px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  opacity: 0.8;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.ink-marker[data-placement="bottom"] .ink-marker__label {
+  top: calc(100% + 1px);
+  bottom: auto;
+}
+
+.ink-marker[data-placement="left"] .ink-marker__label {
+  top: 50%;
+  right: calc(100% + 2px);
+  bottom: auto;
+  left: auto;
+  transform: translateY(-50%);
+}
+
+.ink-marker[data-placement="right"] .ink-marker__label {
+  top: 50%;
+  left: calc(100% + 2px);
+  bottom: auto;
+  transform: translateY(-50%);
+}
+
+.ink-marker:hover .ink-marker__label,
+.ink-marker:focus-visible .ink-marker__label {
+  opacity: 1;
+  border-color: rgba(33, 28, 23, 0.24);
+  color: #211c17;
+}
+
+.ink-marker.is-visited .ink-marker__dot {
+  border-color: #7f2a20;
+  background: #a5382a;
+  box-shadow: 0 0 0 2px rgba(165, 56, 42, 0.14);
+}
+
+.ink-marker.is-visited .ink-marker__label {
+  opacity: 1;
+  border-color: rgba(165, 56, 42, 0.28);
+  color: #211c17;
+}
+
+.ink-marker.is-active .ink-marker__dot {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px rgba(165, 56, 42, 0.18);
+}
+
+.ink-marker.is-active .ink-marker__dot::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(165, 56, 42, 0.55);
+  border-radius: 999px;
+  animation: ink-breathe 2.4s ease-in-out infinite;
+}
+
+.ink-marker.is-active .ink-marker__label {
+  opacity: 1;
+  border-color: #7f2a20;
+  background: #a5382a;
+  color: #f7ecda;
+}
+
+.ink-map-vignette {
+  background: radial-gradient(
+    120% 100% at 50% 45%,
+    transparent 52%,
+    rgba(80, 64, 42, 0.16) 100%
+  );
+}
+
+@keyframes ink-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+.map-chrome {
+  --chrome-border: rgba(33, 28, 23, 0.22);
+}
+
+.map-chrome__grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+}
+
+.map-chrome__frame {
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--chrome-border);
+}
+
+.map-chrome__frame::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(33, 28, 23, 0.08);
+}
+
+.map-chrome__corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(33, 28, 23, 0.42);
+  border-style: solid;
+  border-width: 0;
+}
+
+.map-chrome__corner::after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(165, 56, 42, 0.4);
+}
+
+.map-chrome__corner--tl {
+  top: 12px;
+  left: 12px;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.map-chrome__corner--tl::after {
+  top: -1.5px;
+  left: -1.5px;
+}
+
+.map-chrome__corner--tr {
+  top: 12px;
+  right: 12px;
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+
+.map-chrome__corner--tr::after {
+  top: -1.5px;
+  right: -1.5px;
+}
+
+.map-chrome__corner--bl {
+  bottom: 12px;
+  left: 12px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+
+.map-chrome__corner--bl::after {
+  bottom: -1.5px;
+  left: -1.5px;
+}
+
+.map-chrome__corner--br {
+  bottom: 12px;
+  right: 12px;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+}
+
+.map-chrome__corner--br::after {
+  bottom: -1.5px;
+  right: -1.5px;
+}
+
+.map-chrome__cartouche {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 8px 9px 10px;
+  border: 1px solid rgba(33, 28, 23, 0.14);
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    rgba(251, 246, 234, 0.86),
+    rgba(251, 246, 234, 0.58)
+  );
+}
+
+.map-chrome__cartouche-text {
+  writing-mode: vertical-rl;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.26em;
+  color: rgba(33, 28, 23, 0.72);
+}
+
+.map-chrome__compass {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 58px;
+  height: 58px;
+  opacity: 0.62;
+}
+
+.map-chrome__waves {
+  position: absolute;
+  right: 14px;
+  bottom: 20px;
+  left: 14px;
+  height: 10px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10' viewBox='0 0 40 10'%3E%3Cpath d='M0 7 Q5 2 10 7 T20 7 T30 7 T40 7' fill='none' stroke='%233a332a' stroke-width='0.8' stroke-opacity='0.45'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 40px 10px;
+  opacity: 0.32;
+}
+
+.map-chrome__note {
+  position: absolute;
+  bottom: 4px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 4px;
+  background: rgba(244, 236, 220, 0.66);
+  font-size: 9px;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  color: rgba(107, 98, 87, 0.92);
+}
+
+.map-chrome__legend-swatch {
+  display: inline-block;
+  width: 11px;
+  height: 7px;
+  border: 1px solid rgba(74, 65, 54, 0.55);
+  background: rgba(224, 209, 180, 0.5);
+}
+
+.map-chrome__legend-dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: #a5382a;
+}
+
+.map-chrome__mode,
+.map-chrome__provinces {
+  position: absolute;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 26px;
+  border: 1px solid rgba(33, 28, 23, 0.22);
+  border-radius: 2px;
+  background: rgba(251, 246, 234, 0.9);
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(33, 28, 23, 0.68);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.map-chrome__mode {
+  top: 80px;
+}
+
+.map-chrome__provinces {
+  top: 110px;
+}
+
+.map-chrome__mode:hover,
+.map-chrome__provinces:hover {
+  border-color: rgba(165, 56, 42, 0.45);
+  color: #7f2a20;
+}
+
+.map-chrome__provinces.is-active {
+  border-color: #7f2a20;
+  background: #a5382a;
+  color: #f7ecda;
+}
+
+.ink-map .maplibregl-marker.modern-label,
+.ink-map .maplibregl-marker.admin-label {
+  z-index: 1;
+}
+
+.admin-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  white-space: nowrap;
+  transition: opacity 0.25s ease;
+}
+
+.admin-label.is-hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.admin-label--major {
+  padding: 1px 5px;
+  border: 1px solid rgba(165, 56, 42, 0.22);
+  border-radius: 2px;
+  background: rgba(251, 246, 234, 0.74);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: rgba(33, 28, 23, 0.8);
+}
+
+.admin-label--major .admin-label__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 0;
+  background: #a5382a;
+}
+
+.admin-label--minor {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: rgba(75, 67, 56, 0.56);
+  text-shadow: 0 0 3px rgba(244, 236, 220, 0.95);
+}
+
+.admin-label--minor .admin-label__dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(74, 65, 54, 0.45);
+}
+
+.modern-label {
+  pointer-events: none;
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  white-space: nowrap;
+  transition: opacity 0.25s ease;
+}
+
+.modern-label.is-hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.modern-label--province {
+  padding: 0 4px;
+  border: 1px solid rgba(33, 28, 23, 0.08);
+  border-radius: 2px;
+  background: rgba(251, 246, 234, 0.58);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: rgba(75, 67, 56, 0.58);
+  text-shadow: none;
+}
+
+.modern-label--city {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: rgba(107, 98, 87, 0.78);
+  text-shadow: 0 0 3px rgba(244, 236, 220, 0.95);
+}
+
+.modern-label__dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(90, 81, 69, 0.65);
+}
+
+@media (max-width: 1023px) {
+  .map-chrome__cartouche {
+    top: 12px;
+    left: 12px;
+    gap: 5px;
+    padding: 6px 7px;
+  }
+
+  .map-chrome__cartouche-text {
+    writing-mode: horizontal-tb;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+  }
+
+  .map-chrome__compass {
+    top: 10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+    opacity: 0.56;
+  }
+
+  .map-chrome__waves {
+    display: none;
+  }
+
+  .map-chrome__note {
+    font-size: 8px;
+  }
+
+  .map-chrome__mode,
+  .map-chrome__provinces {
+    right: 10px;
+    width: 44px;
+    height: 24px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  .map-chrome__mode {
+    top: 60px;
+  }
+
+  .map-chrome__provinces {
+    top: 88px;
+  }
+
+  .modern-label--province {
+    font-size: 8.5px;
+  }
+
+  .modern-label--city {
+    font-size: 8px;
+  }
+
+  .admin-label--major {
+    padding: 0 4px;
+    font-size: 9.5px;
+  }
+
+  .admin-label--minor {
+    font-size: 8px;
+  }
+
+  .ink-marker__label {
+    padding: 0 4px;
+    font-size: 9.5px;
+  }
+}
+
+.shelf {
+  position: relative;
+}
+
+.shelf__row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  min-height: 344px;
+  padding: 0 8px;
+}
+
+.shelf__bookend {
+  width: 16px;
+  height: 150px;
+  border-radius: 2px 2px 1px 1px;
+  background: linear-gradient(180deg, #4d3b2a, #2e2318);
+  box-shadow: inset 2px 0 0 rgba(255, 255, 255, 0.08);
+  opacity: 0.85;
+}
+
+.shelf-book {
+  position: relative;
+  width: 78px;
+  height: 330px;
+  border: 1px solid rgba(20, 14, 10, 0.4);
+  border-radius: 2px 4px 4px 2px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.38),
+      transparent 14%,
+      transparent 82%,
+      rgba(255, 255, 255, 0.12)
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08),
+      transparent 22%,
+      rgba(0, 0, 0, 0.24)
+    ),
+    var(--book-accent);
+  box-shadow:
+    inset 3px 0 0 rgba(255, 255, 255, 0.14),
+    inset -2px 0 0 rgba(0, 0, 0, 0.28),
+    0 16px 22px -16px rgba(30, 20, 12, 0.55);
+  color: #f7ecda;
+  cursor: pointer;
+  transform-origin: bottom center;
+  transition:
+    transform 0.32s ease,
+    box-shadow 0.32s ease;
+  user-select: none;
+}
+
+.shelf-book:hover,
+.shelf-book:focus-visible {
+  transform: translateY(-10px) rotate(-1.2deg);
+  box-shadow:
+    inset 3px 0 0 rgba(255, 255, 255, 0.16),
+    0 28px 30px -18px rgba(30, 20, 12, 0.6);
+}
+
+.shelf-book::before,
+.shelf-book::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  left: 10px;
+  height: 1px;
+  background: rgba(247, 236, 218, 0.35);
+}
+
+.shelf-book::before {
+  top: 28px;
+}
+
+.shelf-book::after {
+  bottom: 28px;
+}
+
+.shelf-book__brand {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  writing-mode: vertical-rl;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  opacity: 0.68;
+}
+
+.shelf-book__title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  writing-mode: vertical-rl;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.28);
+}
+
+.shelf-book__meta {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  writing-mode: vertical-rl;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  opacity: 0.72;
+}
+
+.shelf-book__seal {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(247, 236, 218, 0.5);
+  border-radius: 1px;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 8px;
+  color: #f7ecda;
+  opacity: 0.8;
+}
+
+.shelf__plank {
+  height: 16px;
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.08) 0 9px,
+      transparent 9px 26px
+    ),
+    linear-gradient(180deg, #6b543c, #463322);
+  box-shadow: 0 14px 26px -16px rgba(30, 20, 12, 0.7);
+}
+
+.shelf__plank::before {
+  content: "";
+  display: block;
+  height: 3px;
+  background: rgba(255, 240, 214, 0.18);
+}
+
+.book-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  overflow: hidden;
+}
+
+.book-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(33, 28, 23, 0.44);
+  backdrop-filter: blur(2px);
+}
+
+.book-modal__close {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  z-index: 3;
+  padding: 7px 12px;
+  border: 1px solid rgba(247, 236, 218, 0.35);
+  border-radius: 2px;
+  background: rgba(33, 28, 23, 0.55);
+  color: #f7ecda;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.book-modal__close:hover {
+  border-color: rgba(247, 236, 218, 0.6);
+  background: rgba(33, 28, 23, 0.76);
+}
+
+.book-modal__frame {
+  position: relative;
+  z-index: 1;
+  perspective: 2400px;
+  animation: book-rise 0.5s ease-out both;
+}
+
+.book-stage {
+  position: relative;
+  width: min(86vw, 430px);
+  height: min(74vh, 560px);
+  transform-style: preserve-3d;
+  transition: transform 0.95s cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.book-stage.is-open {
+  transform: translateX(50%);
+}
+
+.book-page {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border: 1px solid rgba(33, 28, 23, 0.14);
+  border-radius: 2px 6px 6px 2px;
+  background: linear-gradient(180deg, #fbf6ea, #f2e8d6);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.55);
+}
+
+.book-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 22px;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(33, 28, 23, 0.16), transparent);
+}
+
+.book-page__content {
+  height: 100%;
+  overflow-y: auto;
+  padding: 34px 30px 28px 38px;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.45s;
+}
+
+.book-stage.is-open .book-page__content {
+  opacity: 1;
+}
+
+.book-page__content.has-pager {
+  padding-bottom: 64px;
+}
+
+.book-pager {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  height: 42px;
+  padding: 0 18px;
+  border-top: 1px solid rgba(33, 28, 23, 0.08);
+  background: linear-gradient(180deg, rgba(247, 239, 224, 0.8), #f4ecda 52%);
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #8a7d6c;
+}
+
+.book-pager__button {
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: #4b4338;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.book-pager__button:hover:not(:disabled) {
+  color: #a5382a;
+}
+
+.book-pager__button:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.book-pager__count {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: #8a7d6c;
+  white-space: nowrap;
+}
+
+.book-turn {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.book-turn--next {
+  animation: page-turn-next 1.15s cubic-bezier(0.22, 0.7, 0.24, 1) both;
+}
+
+.book-turn--prev {
+  animation: page-turn-prev 1.2s cubic-bezier(0.22, 0.7, 0.24, 1) both;
+}
+
+.book-turn__face {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(33, 28, 23, 0.12);
+  border-radius: 2px 6px 6px 2px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(33, 28, 23, 0.2),
+      transparent 14%,
+      transparent 78%,
+      rgba(33, 28, 23, 0.12)
+    ),
+    linear-gradient(180deg, #f7efe0, #efe4cf);
+  backface-visibility: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 14px 38px rgba(33, 28, 23, 0.22);
+}
+
+.book-turn__face::after {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border: 1px solid rgba(33, 28, 23, 0.06);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.book-turn__face--back {
+  background:
+    linear-gradient(
+      270deg,
+      rgba(33, 28, 23, 0.16),
+      transparent 16%,
+      transparent 82%,
+      rgba(33, 28, 23, 0.12)
+    ),
+    linear-gradient(180deg, #f2e8d5, #e5d8c0);
+  transform: rotateY(180deg);
+}
+
+.book-turn__name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 30px;
+  letter-spacing: 0.18em;
+  color: rgba(75, 67, 56, 0.16);
+  writing-mode: vertical-rl;
+  transform: translate(-50%, -50%);
+}
+
+.book-turn__folio {
+  position: absolute;
+  right: 26px;
+  bottom: 22px;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: rgba(75, 67, 56, 0.45);
+}
+
+.book-turn__face--back .book-turn__folio {
+  right: auto;
+  left: 26px;
+}
+
+@keyframes page-turn-next {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(-178deg);
+  }
+}
+
+@keyframes page-turn-prev {
+  from {
+    transform: rotateY(-178deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
+}
+
+.book-page__head h2 {
+  margin-top: 6px;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 28px;
+  letter-spacing: 0.12em;
+  color: #211c17;
+}
+
+.book-page__hint {
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #8a7d6c;
+}
+
+.book-chapters {
+  margin-top: 18px;
+}
+
+.book-chapter {
+  padding: 16px 0;
+  border-top: 1px dashed rgba(33, 28, 23, 0.14);
+}
+
+.book-chapter:first-child {
+  padding-top: 4px;
+  border-top: 0;
+}
+
+.book-chapter__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.book-chapter__index {
+  padding-top: 4px;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 11px;
+  color: rgba(165, 56, 42, 0.72);
+}
+
+.book-chapter__title h3 {
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  color: #211c17;
+}
+
+.book-chapter__title p {
+  margin-top: 2px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: #8a7d6c;
+}
+
+.book-chapter__summary {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.9;
+  color: #4b4338;
+}
+
+.book-chapter__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.book-chapter__actions .btn-ink {
+  padding: 7px 12px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.book-chapter__reset {
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #8a7d6c;
+  text-decoration: underline;
+  text-decoration-color: rgba(33, 28, 23, 0.2);
+  text-underline-offset: 4px;
+}
+
+.book-chapter__reset:hover {
+  color: #7f2a20;
+}
+
+.book-chapter__count {
+  margin-left: auto;
+  font-size: 10px;
+  color: #8a7d6c;
+}
+
+.book-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  transform: translateZ(1px);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  cursor: grab;
+  touch-action: none;
+  transition:
+    transform 0.95s cubic-bezier(0.2, 0.75, 0.2, 1),
+    opacity 0.3s ease 0.5s;
+}
+
+.book-cover.is-dragging {
+  transition: none;
+}
+
+.book-stage.is-open .book-cover {
+  cursor: default;
+}
+
+.book-modal__open-wrap {
+  position: absolute;
+  bottom: -56px;
+  left: 50%;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  transform: translateX(-50%);
+}
+
+.book-modal__open {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 15px;
+  border: 1px solid rgba(247, 236, 218, 0.4);
+  border-radius: 2px;
+  background: rgba(251, 246, 234, 0.94);
+  color: #211c17;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -16px rgba(0, 0, 0, 0.6);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.book-modal__open:hover {
+  background: #f7ecda;
+  transform: translateY(-1px);
+}
+
+.book-modal__arrow {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1;
+  animation: nudge-left 1.8s ease-in-out infinite;
+}
+
+.book-modal__hint {
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: rgba(20, 14, 10, 0.42);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(247, 236, 218, 0.86);
+  backdrop-filter: blur(2px);
+}
+
+.book-toc {
+  position: absolute;
+  inset: 18px;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 20px;
+  border: 1px solid rgba(33, 28, 23, 0.12);
+}
+
+.book-toc header h3 {
+  margin-top: 4px;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 26px;
+  letter-spacing: 0.16em;
+  color: #211c17;
+}
+
+.book-toc__sub {
+  margin-top: 2px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #8a7d6c;
+}
+
+.book-toc ul {
+  flex: 1;
+  min-height: 0;
+  margin-top: 14px;
+  overflow-y: auto;
+  border-top: 1px dashed rgba(33, 28, 23, 0.14);
+}
+
+.book-toc li {
+  border-bottom: 1px dashed rgba(33, 28, 23, 0.12);
+}
+
+.book-toc__item {
+  display: grid;
+  grid-template-areas:
+    "index name count"
+    "index meta count";
+  grid-template-columns: auto 1fr auto;
+  gap: 2px 9px;
+  width: 100%;
+  padding: 11px 6px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.book-toc__item:hover {
+  background: rgba(33, 28, 23, 0.035);
+}
+
+.book-toc__item.is-active {
+  background: rgba(165, 56, 42, 0.06);
+  box-shadow: inset 2px 0 0 #a5382a;
+}
+
+.book-toc__index {
+  grid-area: index;
+  align-self: center;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 10px;
+  color: rgba(165, 56, 42, 0.8);
+}
+
+.book-toc__name {
+  grid-area: name;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  color: #211c17;
+}
+
+.book-toc__meta {
+  grid-area: meta;
+  font-size: 9px;
+  letter-spacing: 0.03em;
+  color: #8a7d6c;
+  white-space: nowrap;
+}
+
+.book-toc__index,
+.book-toc__count {
+  white-space: nowrap;
+}
+
+.book-toc__count {
+  grid-area: count;
+  align-self: center;
+  font-size: 9px;
+  color: #8a7d6c;
+}
+
+.book-toc__hint {
+  margin-top: 10px;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: #8a7d6c;
+}
+
+.book-toc > .book-cover__inside-seal {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+.book-toc-mobile {
+  display: none;
+}
+
+.book-detail__head h2 {
+  margin-top: 5px;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 30px;
+  letter-spacing: 0.1em;
+  color: #211c17;
+}
+
+.book-detail__years {
+  margin-top: 3px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: #8a7d6c;
+}
+
+.book-detail__summary {
+  margin-top: 12px;
+  font-size: 12px;
+  line-height: 1.9;
+  color: #4b4338;
+}
+
+.book-detail__acts {
+  margin-top: 14px;
+  border-top: 1px dashed rgba(33, 28, 23, 0.14);
+}
+
+.book-detail__acts li {
+  display: flex;
+  gap: 9px;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(33, 28, 23, 0.1);
+}
+
+.book-detail__act-index {
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 10px;
+  color: rgba(165, 56, 42, 0.8);
+}
+
+.book-detail__acts strong {
+  display: block;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: #211c17;
+}
+
+.book-detail__acts em {
+  display: block;
+  margin-top: 1px;
+  font-size: 9px;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  color: #8a7d6c;
+}
+
+.book-detail__progress {
+  margin-top: 16px;
+}
+
+.book-detail__bar {
+  height: 3px;
+  overflow: hidden;
+  background: rgba(33, 28, 23, 0.1);
+}
+
+.book-detail__bar span {
+  display: block;
+  height: 100%;
+  background: #a5382a;
+  transition: width 0.5s ease;
+}
+
+.book-detail__progress p {
+  margin-top: 5px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: #8a7d6c;
+}
+
+.book-detail__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.book-detail__actions .btn-ink {
+  padding: 8px 14px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.book-detail__circle-link {
+  padding-bottom: 1px;
+  border-bottom: 1px dotted rgba(165, 56, 42, 0.4);
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #a5382a;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.book-detail__circle-link:hover {
+  border-bottom-color: rgba(33, 28, 23, 0.4);
+  color: #211c17;
+}
+
+@keyframes nudge-left {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-4px);
+  }
+}
+
+.book-stage.is-open .book-cover {
+  transform: rotateY(-180deg) translateZ(1px);
+}
+
+.book-cover__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 2px 6px 6px 2px;
+  backface-visibility: hidden;
+  box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.5);
+}
+
+.book-cover__face--front {
+  border: 1px solid rgba(20, 14, 10, 0.38);
+  background:
+    radial-gradient(
+      120% 90% at 20% 0%,
+      rgba(255, 255, 255, 0.16),
+      transparent 55%
+    ),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.3)),
+    var(--book-accent);
+  color: #f7ecda;
+}
+
+.book-cover__frame {
+  position: absolute;
+  inset: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 12px;
+  border: 1px solid rgba(247, 236, 218, 0.3);
+}
+
+.book-cover__frame::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(247, 236, 218, 0.12);
+  pointer-events: none;
+}
+
+.book-cover__brand {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  opacity: 0.72;
+}
+
+.book-cover__title {
+  margin: 8px 0;
+  writing-mode: vertical-rl;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 84px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.book-cover__subtitle {
+  font-size: 12px;
+  letter-spacing: 0.35em;
+  opacity: 0.86;
+}
+
+.book-cover__seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 2px;
+  background: var(--book-seal);
+  box-shadow: inset 0 0 0 1px rgba(247, 236, 218, 0.35);
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 12px;
+}
+
+.book-cover__years {
+  margin-top: auto;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  opacity: 0.62;
+}
+
+.book-cover__face--back {
+  border: 1px solid rgba(20, 14, 10, 0.25);
+  background: linear-gradient(180deg, #f7efe0, #efe4cf);
+  color: #211c17;
+  transform: rotateY(180deg);
+}
+
+.book-cover__inside {
+  position: absolute;
+  inset: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px 20px;
+  border: 1px solid rgba(33, 28, 23, 0.12);
+}
+
+.book-cover__inside h3 {
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 24px;
+  letter-spacing: 0.12em;
+}
+
+.book-cover__inside p {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #4b4338;
+}
+
+.book-cover__inside-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-end;
+  width: 26px;
+  height: 26px;
+  margin-top: auto;
+  border-radius: 2px;
+  background: rgba(165, 56, 42, 0.82);
+  color: #f7ecda;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 12px;
+}
+
+.return-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(244, 236, 220, 0.9);
+  backdrop-filter: blur(2px);
+  animation: fade-in 0.3s ease both;
+}
+
+.return-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: center;
+  justify-content: flex-end;
+  width: 340px;
+  height: 300px;
+}
+
+.return-book {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 210px;
+  border: 1px solid rgba(20, 14, 10, 0.35);
+  border-radius: 2px 5px 5px 2px;
+  background:
+    radial-gradient(
+      120% 90% at 20% 0%,
+      rgba(255, 255, 255, 0.14),
+      transparent 55%
+    ),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.3)),
+    var(--book-accent);
+  color: #f7ecda;
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+  transform-origin: bottom center;
+  animation: return-book 1.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.return-book__brand {
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  opacity: 0.7;
+}
+
+.return-book__title {
+  writing-mode: vertical-rl;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+
+.return-book__seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 1px;
+  background: var(--book-seal);
+  box-shadow: inset 0 0 0 1px rgba(247, 236, 218, 0.35);
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 10px;
+}
+
+.return-shelf {
+  width: 300px;
+  height: 12px;
+  margin-top: 10px;
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.08) 0 8px,
+      transparent 8px 22px
+    ),
+    linear-gradient(180deg, #6b543c, #463322);
+  box-shadow: 0 14px 26px -16px rgba(30, 20, 12, 0.7);
+}
+
+.return-label {
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: #6b6257;
+  animation: fade-in 0.4s ease 0.2s both;
+}
+
+@keyframes return-book {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(-1deg);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(48px) scale(0.72) rotate(1deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(104px) scale(0.24) rotate(0deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes book-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 767px) {
+  .shelf__row {
+    min-height: 276px;
+    gap: 10px;
+  }
+
+  .shelf-book {
+    width: 62px;
+    height: 260px;
+  }
+
+  .shelf-book__title {
+    font-size: 24px;
+  }
+
+  .shelf__bookend {
+    width: 12px;
+    height: 120px;
+  }
+
+  .book-modal {
+    padding: 32px 12px;
+  }
+
+  .book-modal__close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .book-stage {
+    width: min(88vw, 430px);
+    height: min(76vh, 600px);
+  }
+
+  .book-stage.is-open {
+    transform: none;
+  }
+
+  .book-stage.is-open .book-cover {
+    opacity: 0;
+    transform: rotateY(-150deg) translateZ(1px);
+  }
+
+  .book-page__content {
+    padding: 26px 18px 20px 28px;
+  }
+
+  .book-page__content.has-pager {
+    padding-bottom: 58px;
+  }
+
+  .book-pager {
+    height: 40px;
+    padding: 0 14px;
+    font-size: 9px;
+  }
+
+  .book-cover__title {
+    font-size: 64px;
+  }
+
+  .book-toc-mobile {
+    display: flex;
+    gap: 6px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+    border-bottom: 1px dashed rgba(33, 28, 23, 0.14);
+  }
+
+  .book-toc-mobile__item {
+    flex: 0 0 auto;
+    padding: 4px 10px;
+    border: 1px solid rgba(33, 28, 23, 0.13);
+    border-radius: 2px;
+    background: transparent;
+    font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: #4b4338;
+    cursor: pointer;
+  }
+
+  .book-toc-mobile__item.is-active {
+    border-color: #a5382a;
+    background: #a5382a;
+    color: #f7ecda;
+  }
+
+.book-detail__title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.book-detail__title-row > div {
+  flex: 1;
+}
+
+.book-detail__head h2 {
+    font-size: 26px;
+  }
+
+  .book-modal__open-wrap {
+    bottom: -46px;
+  }
+
+  .book-modal__hint {
+    font-size: 9px;
+  }
+}
+
+.circle-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      ellipse 70% 40% at 50% 0%,
+      rgba(216, 180, 106, 0.05),
+      transparent 70%
+    );
+}
+
+.circle-page__inner {
+  max-width: 1180px;
+  padding: 32px 24px 80px;
+  margin: 0 auto;
+}
+
+.circle-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.circle-header__meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.circle-back {
+  padding-bottom: 2px;
+  border-bottom: 1px dotted rgba(33, 28, 23, 0.3);
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: #4b4338;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.circle-back:hover {
+  color: #211c17;
+}
+
+.circle-intro {
+  max-width: 720px;
+  margin-top: 46px;
+  animation: fade-in 0.5s ease both;
+}
+
+.circle-intro h1 {
+  margin-top: 14px;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 58px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  color: #211c17;
+}
+
+.circle-intro__sub {
+  margin-top: 14px;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  color: #4b4338;
+}
+
+.circle-intro__summary {
+  max-width: 640px;
+  margin-top: 18px;
+  font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #4b4338;
+}
+
+.circle-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 26px;
+  align-items: start;
+  margin-top: 40px;
+}
+
+.star-chart {
+  position: relative;
+  padding: 18px 20px 16px;
+  border: 1px solid rgba(33, 28, 23, 0.35);
+  border-radius: 2px;
+  background:
+    radial-gradient(
+      circle at 50% 46%,
+      rgba(59, 82, 105, 0.45),
+      transparent 62%
+    ),
+    radial-gradient(
+      circle at 18% 12%,
+      rgba(216, 180, 106, 0.07),
+      transparent 38%
+    ),
+    #101720;
+  color: #f2e7d3;
+  box-shadow: 0 24px 50px -36px rgba(20, 14, 10, 0.65);
+  overflow: visible;
+  animation: fade-in 0.7s ease 0.08s both;
+}
+
+.star-chart__head,
+.star-chart__foot {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(242, 231, 211, 0.55);
+}
+
+.star-chart__head {
+  padding: 2px 2px 10px;
+  border-bottom: 1px solid rgba(242, 231, 211, 0.1);
+}
+
+.star-chart__foot {
+  padding-top: 10px;
+  border-top: 1px solid rgba(242, 231, 211, 0.1);
+}
+
+.star-chart__sky {
+  position: relative;
+  width: 100%;
+  margin: 10px 0 8px;
+  aspect-ratio: 1 / 1;
+}
+
+.star-chart__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.star-ring {
+  fill: none;
+  stroke: rgba(216, 180, 106, 0.18);
+  stroke-width: 0.35;
+  stroke-dasharray: 1 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.star-ring--depth {
+  stroke: rgba(216, 180, 106, 0.11);
+  stroke-dasharray: 0.5 4;
+}
+
+.star-dust {
+  fill: #f2e7d3;
+}
+
+.star-spoke {
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+  opacity: 0.4;
+  vector-effect: non-scaling-stroke;
+  transition:
+    opacity 0.3s ease,
+    stroke-dasharray 0.3s ease;
+}
+
+.star-spoke.is-muted {
+  opacity: 0.12;
+}
+
+.star-spoke.is-active {
+  stroke-dasharray: none;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 3px rgba(247, 236, 218, 0.35));
+}
+
+.star-node {
+  position: absolute;
+  z-index: 3;
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.star-node::before {
+  content: "";
+  position: absolute;
+  top: -13px;
+  left: -13px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+}
+
+.star-node__dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(247, 236, 218, 0.55);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(216, 180, 106, 0.25);
+  transform: translate(-50%, -50%);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.star-node.is-core .star-node__dot {
+  width: 11px;
+  height: 11px;
+}
+
+.star-node.is-active .star-node__dot {
+  border-color: #f7ecda;
+  box-shadow:
+    0 0 0 4px rgba(247, 236, 218, 0.1),
+    0 0 18px currentColor;
+  transform: translate(-50%, -50%) scale(1.6);
+}
+
+.star-node__label {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 7px;
+  border: 1px solid rgba(242, 231, 211, 0.14);
+  border-radius: 2px;
+  background: rgba(10, 16, 23, 0.82);
+  white-space: nowrap;
+  backdrop-filter: blur(3px);
+  transition:
+    opacity 0.2s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.star-node__label.is-quiet {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.star-node:hover .star-node__label.is-quiet,
+.star-node:focus-visible .star-node__label.is-quiet,
+.star-node.is-active .star-node__label.is-quiet {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.star-node__name {
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  color: #f2e7d3;
+}
+
+.star-node__relation {
+  font-size: 9px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+}
+
+.star-node.is-active .star-node__label {
+  border-color: rgba(216, 180, 106, 0.65);
+  background: rgba(16, 23, 32, 0.95);
+}
+
+.star-node:hover .star-node__label {
+  border-color: rgba(216, 180, 106, 0.45);
+}
+
+.star-node:focus-visible {
+  outline: none;
+}
+
+.star-node:focus-visible .star-node__dot {
+  box-shadow:
+    0 0 0 3px #f7ecda,
+    0 0 18px currentColor;
+}
+
+.star-node:focus-visible .star-node__label {
+  border-color: #d8b46a;
+}
+
+.star-node__label--right {
+  top: 50%;
+  left: 13px;
+  align-items: flex-start;
+  text-align: left;
+  transform: translateY(-50%);
+}
+
+.star-node__label--left {
+  top: 50%;
+  right: 13px;
+  align-items: flex-end;
+  text-align: right;
+  transform: translateY(-50%);
+}
+
+.star-node__label--below {
+  top: 13px;
+  left: 50%;
+  align-items: center;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.star-node__label--above {
+  bottom: 13px;
+  left: 50%;
+  align-items: center;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.star-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 124px;
+  height: 124px;
+  border: 1px solid rgba(216, 180, 106, 0.38);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 38%,
+    rgba(48, 67, 87, 0.9),
+    rgba(13, 20, 28, 0.97) 70%
+  );
+  box-shadow:
+    0 0 0 8px rgba(216, 180, 106, 0.03),
+    0 18px 40px -18px rgba(0, 0, 0, 0.8);
+  transform: translate(-50%, -50%);
+}
+
+.star-center__halo {
+  position: absolute;
+  inset: -16px;
+  border: 1px dashed rgba(216, 180, 106, 0.18);
+  border-radius: 50%;
+}
+
+.star-center__seal {
+  width: 32px;
+  height: 32px;
+  font-size: 10px;
+}
+
+.star-center__name {
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: #f2e7d3;
+}
+
+.star-center__meta {
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  color: rgba(242, 231, 211, 0.5);
+}
+
+.circle-aside {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px 22px 18px;
+  border: 1px solid rgba(33, 28, 23, 0.14);
+  background: rgba(251, 246, 234, 0.72);
+  animation: fade-in 0.7s ease 0.16s both;
+}
+
+.circle-aside__head {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(33, 28, 23, 0.1);
+  font-size: 10px;
+  color: #8a7d6c;
+}
+
+.circle-aside__head span {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.circle-aside__body {
+  min-height: 228px;
+}
+
+.circle-aside__tag {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #8a7d6c;
+}
+
+.circle-aside__tag i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.circle-aside h2 {
+  margin-top: 8px;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 30px;
+  letter-spacing: 0.1em;
+  color: #211c17;
+}
+
+.circle-aside__years {
+  margin-top: 3px;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  color: #8a7d6c;
+}
+
+.circle-aside__note {
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.9;
+  color: #4b4338;
+}
+
+.circle-aside__back {
+  margin-top: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #a5382a;
+  cursor: pointer;
+}
+
+.circle-aside__intro {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #4b4338;
+}
+
+.circle-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 12px;
+  margin-top: 14px;
+  border-top: 1px dashed rgba(33, 28, 23, 0.12);
+}
+
+.circle-list li {
+  border-bottom: 1px dashed rgba(33, 28, 23, 0.1);
+}
+
+.circle-list button {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  width: 100%;
+  padding: 7px 2px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.circle-list__dot {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.circle-list__name {
+  min-width: 0;
+  overflow: hidden;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "Noto Serif SC", serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #211c17;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.circle-list__relation {
+  margin-left: auto;
+  font-size: 8px;
+  color: #8a7d6c;
+  white-space: nowrap;
+}
+
+.circle-list button:hover .circle-list__name {
+  color: #a5382a;
+}
+
+.circle-aside__tones {
+  padding-top: 12px;
+  border-top: 1px solid rgba(33, 28, 23, 0.1);
+}
+
+.circle-aside__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 6px;
+}
+
+.circle-aside__chips span {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  color: #8a7d6c;
+}
+
+.circle-aside__chips i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.circle-aside__source {
+  padding-top: 10px;
+  border-top: 1px solid rgba(33, 28, 23, 0.08);
+  font-size: 9px;
+  line-height: 1.7;
+  color: #8a7d6c;
+}
+
+.circle-actions {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 46px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(33, 28, 23, 0.1);
+}
+
+.circle-actions__note {
+  margin-top: 4px;
+  font-size: 10px;
+  color: #8a7d6c;
+}
+
+.circle-actions__buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+@media (max-width: 1023px) {
+  .circle-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .circle-aside {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .circle-page__inner {
+    padding: 22px 18px 64px;
+  }
+
+  .circle-intro {
+    margin-top: 34px;
+  }
+
+  .circle-intro h1 {
+    font-size: 42px;
+  }
+
+  .circle-intro__sub {
+    font-size: 14px;
+  }
+
+  .star-chart {
+    padding: 14px 14px 12px;
+  }
+
+  .star-chart__head,
+  .star-chart__foot {
+    font-size: 9px;
+  }
+
+  .star-center {
+    width: 96px;
+    height: 96px;
+    gap: 3px;
+  }
+
+  .star-center__seal {
+    width: 26px;
+    height: 26px;
+    font-size: 9px;
+  }
+
+  .star-center__name {
+    font-size: 16px;
+  }
+
+  .star-center__meta {
+    font-size: 7px;
+  }
+
+  .star-node__label {
+    padding: 3px 5px;
+  }
+
+  .star-node__name {
+    font-size: 11px;
+  }
+
+  .star-node__relation {
+    font-size: 8px;
+  }
+
+  .star-node__label--right {
+    left: 10px;
+  }
+
+  .star-node__label--left {
+    right: 10px;
+  }
+
+  .star-node__label--below {
+    top: 10px;
+  }
+
+  .star-node__label--above {
+    bottom: 10px;
+  }
+
+  .circle-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .circle-actions__buttons {
+    width: 100%;
+  }
+
+  .circle-actions__buttons .btn-ink,
+  .circle-actions__buttons .btn-ghost {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .return-book {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .return-label,
+  .book-modal__arrow {
+    animation: none !important;
+  }
+
+  .book-turn--next,
+  .book-turn--prev {
+    animation-duration: 0.55s !important;
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "id": "tang",
+  "name": "唐",
+  "start": 618,
+  "end": 907,
+  "basemap": "terrain",
+  "skin": {
+    "paper": "#f4ecdc",
+    "accent": "#8f5a2a",
+    "seal": "#6f431f"
+  },
+  "places": [
+    {
+      "id": "gongxian",
+      "ancient": "巩县",
+      "modern": "河南巩义",
+      "lng": 112.98,
+      "lat": 34.75,
+      "labelPlacement": "bottom"
+    },
+    {
+      "id": "luoyang",
+      "ancient": "洛阳",
+      "modern": "河南洛阳",
+      "lng": 112.45,
+      "lat": 34.62,
+      "labelPlacement": "right"
+    },
+    {
+      "id": "changan",
+      "ancient": "长安",
+      "modern": "陕西西安",
+      "lng": 108.94,
+      "lat": 34.34,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "fuzhou-tang",
+      "ancient": "鄜州",
+      "modern": "陕西富县",
+      "lng": 109.38,
+      "lat": 35.99,
+      "labelPlacement": "top"
+    },
+    {
+      "id": "qinzhou",
+      "ancient": "秦州",
+      "modern": "甘肃天水",
+      "lng": 105.72,
+      "lat": 34.58,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "chengdu",
+      "ancient": "成都",
+      "modern": "四川成都",
+      "lng": 104.07,
+      "lat": 30.57,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "kuizhou",
+      "ancient": "夔州",
+      "modern": "重庆奉节",
+      "lng": 109.47,
+      "lat": 31.02,
+      "labelPlacement": "right"
+    },
+    {
+      "id": "jiangling",
+      "ancient": "江陵",
+      "modern": "湖北荆州",
+      "lng": 112.19,
+      "lat": 30.35,
+      "labelPlacement": "right"
+    },
+    {
+      "id": "tanzhou",
+      "ancient": "潭州",
+      "modern": "湖南长沙",
+      "lng": 112.94,
+      "lat": 28.23,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "xiangjiang-tang",
+      "ancient": "湘江",
+      "modern": "湖南湘江",
+      "lng": 112.98,
+      "lat": 28.0,
+      "labelPlacement": "bottom"
+    }
+  ]
+}

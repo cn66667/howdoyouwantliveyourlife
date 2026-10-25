@@ -1,0 +1,70 @@
+{
+  "id": "qing",
+  "name": "清",
+  "start": 1636,
+  "end": 1912,
+  "basemap": "terrain",
+  "skin": {
+    "paper": "#f4ecdc",
+    "accent": "#3f5a6b",
+    "seal": "#2f4654"
+  },
+  "places": [
+    {
+      "id": "fuzhou",
+      "ancient": "福州",
+      "modern": "福建福州",
+      "lng": 119.296,
+      "lat": 26.074,
+      "labelPlacement": "bottom"
+    },
+    {
+      "id": "jingshi",
+      "ancient": "京师",
+      "modern": "北京",
+      "lng": 116.407,
+      "lat": 39.904,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "guangzhou",
+      "ancient": "广州",
+      "modern": "广东广州",
+      "lng": 113.264,
+      "lat": 23.129,
+      "labelPlacement": "bottom"
+    },
+    {
+      "id": "zhenhai",
+      "ancient": "镇海",
+      "modern": "浙江宁波镇海",
+      "lng": 121.72,
+      "lat": 29.95,
+      "labelPlacement": "right"
+    },
+    {
+      "id": "yili",
+      "ancient": "伊犁",
+      "modern": "新疆伊犁",
+      "lng": 81.32,
+      "lat": 43.92,
+      "labelPlacement": "top"
+    },
+    {
+      "id": "xian",
+      "ancient": "西安",
+      "modern": "陕西西安",
+      "lng": 108.94,
+      "lat": 34.34,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "puning",
+      "ancient": "普宁",
+      "modern": "广东普宁",
+      "lng": 116.17,
+      "lat": 23.3,
+      "labelPlacement": "bottom"
+    }
+  ]
+}

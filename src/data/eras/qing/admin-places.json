@@ -1,0 +1,22 @@
+[
+  { "id": "jingshi", "name": "京师", "lng": 116.41, "lat": 39.9, "rank": 1 },
+  { "id": "shengjing", "name": "盛京", "lng": 123.43, "lat": 41.8, "rank": 1 },
+  { "id": "fuzhou", "name": "福州府", "lng": 119.3, "lat": 26.07, "rank": 1 },
+  { "id": "guangzhou", "name": "广州府", "lng": 113.26, "lat": 23.13, "rank": 1 },
+  { "id": "yili", "name": "伊犁", "lng": 81.32, "lat": 43.92, "rank": 1 },
+  { "id": "baoding", "name": "保定府", "lng": 115.46, "lat": 38.87, "rank": 2 },
+  { "id": "jinan", "name": "济南府", "lng": 117.12, "lat": 36.65, "rank": 2 },
+  { "id": "kaifeng", "name": "开封府", "lng": 114.31, "lat": 34.8, "rank": 2 },
+  { "id": "xian", "name": "西安府", "lng": 108.94, "lat": 34.34, "rank": 2 },
+  { "id": "chengdu", "name": "成都府", "lng": 104.07, "lat": 30.57, "rank": 2 },
+  { "id": "wuchang", "name": "武昌府", "lng": 114.31, "lat": 30.59, "rank": 2 },
+  { "id": "nanchang", "name": "南昌府", "lng": 115.86, "lat": 28.68, "rank": 2 },
+  { "id": "hangzhou", "name": "杭州府", "lng": 120.16, "lat": 30.27, "rank": 2 },
+  { "id": "guilin", "name": "桂林府", "lng": 110.29, "lat": 25.27, "rank": 2 },
+  { "id": "kunming", "name": "云南府", "lng": 102.83, "lat": 24.88, "rank": 2 },
+  { "id": "guiyang", "name": "贵阳府", "lng": 106.63, "lat": 26.65, "rank": 2 },
+  { "id": "lanzhou", "name": "兰州府", "lng": 103.83, "lat": 36.06, "rank": 2 },
+  { "id": "taiyuan", "name": "太原府", "lng": 112.55, "lat": 37.86, "rank": 2 },
+  { "id": "zhenhai", "name": "镇海", "lng": 121.72, "lat": 29.95, "rank": 2 },
+  { "id": "puning", "name": "普宁", "lng": 116.17, "lat": 23.3, "rank": 2 }
+]

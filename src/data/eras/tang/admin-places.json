@@ -1,0 +1,19 @@
+[
+  { "id": "jingzhao", "name": "京兆府", "lng": 108.94, "lat": 34.34, "rank": 1 },
+  { "id": "henanfu", "name": "河南府", "lng": 112.45, "lat": 34.62, "rank": 1 },
+  { "id": "taiyuanfu", "name": "太原府", "lng": 112.55, "lat": 37.86, "rank": 1 },
+  { "id": "chengdufu", "name": "成都府", "lng": 104.07, "lat": 30.57, "rank": 1 },
+  { "id": "jianglingfu", "name": "江陵府", "lng": 112.19, "lat": 30.35, "rank": 1 },
+  { "id": "yangzhou", "name": "扬州", "lng": 119.42, "lat": 32.39, "rank": 1 },
+  { "id": "guangzhou", "name": "广州", "lng": 113.26, "lat": 23.13, "rank": 1 },
+  { "id": "youzhou", "name": "幽州", "lng": 116.41, "lat": 39.9, "rank": 1 },
+  { "id": "liangzhou", "name": "凉州", "lng": 102.64, "lat": 37.93, "rank": 1 },
+  { "id": "huazhou", "name": "华州", "lng": 109.76, "lat": 34.51, "rank": 2 },
+  { "id": "fuzhou-tang", "name": "鄜州", "lng": 109.38, "lat": 35.99, "rank": 2 },
+  { "id": "qinzhou", "name": "秦州", "lng": 105.72, "lat": 34.58, "rank": 2 },
+  { "id": "kuizhou", "name": "夔州", "lng": 109.47, "lat": 31.02, "rank": 2 },
+  { "id": "tanzhou", "name": "潭州", "lng": 112.94, "lat": 28.23, "rank": 2 },
+  { "id": "yuezhou", "name": "岳州", "lng": 113.13, "lat": 29.36, "rank": 2 },
+  { "id": "suzhou", "name": "苏州", "lng": 120.58, "lat": 31.3, "rank": 2 },
+  { "id": "hangzhou", "name": "杭州", "lng": 120.16, "lat": 30.27, "rank": 2 }
+]

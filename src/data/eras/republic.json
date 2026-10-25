@@ -1,0 +1,78 @@
+{
+  "id": "republic",
+  "name": "民国",
+  "start": 1912,
+  "end": 1949,
+  "basemap": "terrain",
+  "skin": {
+    "paper": "#f4ecdc",
+    "accent": "#5a6650",
+    "seal": "#46503d"
+  },
+  "places": [
+    {
+      "id": "shaoxing",
+      "ancient": "绍兴",
+      "modern": "浙江绍兴",
+      "lng": 120.582,
+      "lat": 29.997,
+      "labelPlacement": "bottom"
+    },
+    {
+      "id": "nanjing",
+      "ancient": "南京",
+      "modern": "江苏南京",
+      "lng": 118.797,
+      "lat": 32.06,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "tokyo",
+      "ancient": "东京",
+      "modern": "日本东京",
+      "lng": 139.69,
+      "lat": 35.69,
+      "labelPlacement": "right"
+    },
+    {
+      "id": "sendai",
+      "ancient": "仙台",
+      "modern": "日本仙台",
+      "lng": 140.87,
+      "lat": 38.27,
+      "labelPlacement": "right"
+    },
+    {
+      "id": "hangzhou",
+      "ancient": "杭州",
+      "modern": "浙江杭州",
+      "lng": 120.16,
+      "lat": 30.27,
+      "labelPlacement": "right"
+    },
+    {
+      "id": "beijing",
+      "ancient": "北京",
+      "modern": "北京",
+      "lng": 116.407,
+      "lat": 39.904,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "xiamen",
+      "ancient": "厦门",
+      "modern": "福建厦门",
+      "lng": 118.09,
+      "lat": 24.48,
+      "labelPlacement": "bottom"
+    },
+    {
+      "id": "shanghai",
+      "ancient": "上海",
+      "modern": "上海",
+      "lng": 121.474,
+      "lat": 31.23,
+      "labelPlacement": "right"
+    }
+  ]
+}

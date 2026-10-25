@@ -1,0 +1,147 @@
+{
+  "id": "ming",
+  "name": "明",
+  "start": 1368,
+  "end": 1644,
+  "basemap": "paper",
+  "skin": {
+    "paper": "#f4ecdc",
+    "accent": "#a5382a",
+    "seal": "#7f2a20"
+  },
+  "places": [
+    {
+      "id": "taihu",
+      "ancient": "太湖",
+      "modern": "江苏苏州太湖",
+      "lng": 120.2,
+      "lat": 31.2,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "tiantai",
+      "ancient": "天台山",
+      "modern": "浙江台州天台县",
+      "lng": 121.03,
+      "lat": 29.25,
+      "labelPlacement": "bottom"
+    },
+    {
+      "id": "huangshan",
+      "ancient": "黄山",
+      "modern": "安徽黄山",
+      "lng": 118.17,
+      "lat": 30.13,
+      "labelPlacement": "bottom"
+    },
+    {
+      "id": "huashan",
+      "ancient": "华山",
+      "modern": "陕西渭南华阴",
+      "lng": 110.08,
+      "lat": 34.48
+    },
+    {
+      "id": "jiangyin",
+      "ancient": "江阴",
+      "modern": "江苏江阴",
+      "lng": 120.28,
+      "lat": 31.92,
+      "labelPlacement": "right"
+    },
+    {
+      "id": "xiangjiang",
+      "ancient": "湘江新塘",
+      "modern": "湖南衡阳湘江",
+      "lng": 112.57,
+      "lat": 26.9,
+      "labelPlacement": "bottom"
+    },
+    {
+      "id": "jizushan",
+      "ancient": "鸡足山",
+      "modern": "云南大理宾川",
+      "lng": 100.35,
+      "lat": 25.97
+    },
+    {
+      "id": "lijiang",
+      "ancient": "丽江",
+      "modern": "云南丽江",
+      "lng": 100.23,
+      "lat": 26.87
+    },
+    {
+      "id": "yuyao",
+      "ancient": "余姚",
+      "modern": "浙江宁波余姚",
+      "lng": 121.15,
+      "lat": 30.04,
+      "labelPlacement": "bottom"
+    },
+    {
+      "id": "jingshi",
+      "ancient": "京师",
+      "modern": "北京",
+      "lng": 116.407,
+      "lat": 39.904
+    },
+    {
+      "id": "longchang",
+      "ancient": "龙场",
+      "modern": "贵州修文",
+      "lng": 106.59,
+      "lat": 26.84
+    },
+    {
+      "id": "guiyang",
+      "ancient": "贵阳",
+      "modern": "贵州贵阳",
+      "lng": 106.63,
+      "lat": 26.647
+    },
+    {
+      "id": "luling",
+      "ancient": "庐陵",
+      "modern": "江西吉安",
+      "lng": 114.99,
+      "lat": 27.11
+    },
+    {
+      "id": "ganzhou",
+      "ancient": "赣州",
+      "modern": "江西赣州",
+      "lng": 114.94,
+      "lat": 25.83
+    },
+    {
+      "id": "nanchang",
+      "ancient": "南昌",
+      "modern": "江西南昌",
+      "lng": 115.858,
+      "lat": 28.682
+    },
+    {
+      "id": "shaoxing",
+      "ancient": "绍兴",
+      "modern": "浙江绍兴",
+      "lng": 120.582,
+      "lat": 29.997,
+      "labelPlacement": "left"
+    },
+    {
+      "id": "nanning",
+      "ancient": "南宁",
+      "modern": "广西南宁",
+      "lng": 108.37,
+      "lat": 22.82
+    },
+    {
+      "id": "dayu",
+      "ancient": "大余",
+      "modern": "江西大余",
+      "lng": 114.36,
+      "lat": 25.4
+    }
+  ]
+}
